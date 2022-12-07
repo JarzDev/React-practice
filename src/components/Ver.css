@@ -1,0 +1,41 @@
+
+#logo{
+    margin-top: 2%;
+  
+}
+
+#ver{
+
+    border-style: solid;
+}
+
+#titulos {
+
+   
+    
+}
+
+#nombre {
+    display: inline-block;
+    margin-left: 3%;
+}
+
+
+
+#modelo {
+ 
+    display: inline-block;
+    
+}
+
+#serial {
+ 
+    display: inline-block;
+    
+}
+
+.textos{
+    margin-right: 17%;
+    display: inline-block;
+    
+}
