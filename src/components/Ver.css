@@ -1,6 +1,7 @@
 
-#logo{
+#logov{
     margin-top: 2%;
+    margin-right: 16%;
   
 }
 
@@ -9,11 +10,7 @@
     border-style: solid;
 }
 
-#titulos {
 
-   
-    
-}
 
 #nombre {
     display: inline-block;
@@ -35,7 +32,18 @@
 }
 
 .textos{
-    margin-right: 17%;
+    margin-right: 5%;
     display: inline-block;
     
+}
+
+#contacto{
+    display: inline-block;    
+   margin-left: 20%;
+}
+
+#tecnico 
+{
+    
+ display: inline-block;      
 }

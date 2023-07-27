@@ -1,12 +1,10 @@
 import React,{useState} from 'react'
-import {useNavigate} from 'react-router-dom'
 import {collection, addDoc} from 'firebase/firestore'
 import {db} from '../firebaseConfig/firebase'
-import {async} from '@firebase/util'
 import Swal from 'sweetalert2';
-import withReactContent from 'sweetalert2-react-content';
-
-const mySwal = withReactContent(Swal);
+import appFirebase from '../firebaseConfig/firebase';
+import {useNavigate} from 'react-router-dom'
+import {getAuth} from 'firebase/auth'
 
 const Create = () => {
  
@@ -24,14 +22,14 @@ const Create = () => {
     const [tareas, setTareas] = useState('');
     const [partes, setPartes] = useState('');
     const [recomendaciones, setRecomendaciones] = useState('');
-    const navigate = useNavigate();
+    const [horas, setHoras] = useState('');
 
+    const navigate = useNavigate();
+    const auth = getAuth(appFirebase)
 const clientsCollection = collection(db, "clientes");
 
 const goodSave = () => {
-  
-
-  const Toast = Swal.mixin({
+   const Toast = Swal.mixin({
     toast: true,
     position: 'top-center',
     showConfirmButton: false,
@@ -40,6 +38,7 @@ const goodSave = () => {
     didOpen: (toast) => {
       toast.addEventListener('mouseenter', Swal.stopTimer)
       toast.addEventListener('mouseleave', Swal.resumeTimer)
+      window.location.reload(true);
     }
   })
   
@@ -49,7 +48,7 @@ const goodSave = () => {
   })
 }
 
-const store = async (e) =>{
+const store = async (e) =>{ 
    e.preventDefault();
     await addDoc (clientsCollection, {
       nombre:nombre,
@@ -62,84 +61,154 @@ const store = async (e) =>{
           serial:serial,
            fecha:fecha, titulo:titulo,
             tareas:tareas, partes:partes,
-             recomendaciones:recomendaciones });
+             recomendaciones:recomendaciones,
+              horas:horas });
 
-    goodSave();
-    navigate ('/');
-    window.location.reload(true);
-    }
+     goodSave();
+     }
 
  const inNombre =async()=>{
-  const { value: nombre } = await Swal.fire({
-    title: 'Entre el nombre',
+   const { value: nombre } = await Swal.fire({
+    title: 'Nombre de la empresa',
     input: 'text',
-    inputLabel: 'Nombre de la empresa',
-    inputPlaceholder: 'Nombre de empresa'
+    inputPlaceholder: 'Nombre de empresa',
+    allowEscapeKey: false,
+    allowOutsideClick: false,
+    inputValidator: (value) => {
+      if (!value) {
+        return 'Por favor escribe algo!!'
+      }
+    }
   
   })
   const { value: rut } = await Swal.fire({
-    title: 'Entre el Rut',
+    title: 'Ingrese el Rut de la empresa',
     input: 'text',
-    inputLabel: 'Rut de la empresa',
-    inputPlaceholder: 'Rut'
+    inputLabel: 'Rut#',
+    inputPlaceholder: '11.222.333-4',
+    allowEscapeKey: false,
+    allowOutsideClick: false,
+    inputValidator: (value) => {
+      if (!value) {
+        return 'Por favor escribe algo!!'
+      }
+    }
+    
   
   })
   const { value: direccion } = await Swal.fire({
-    title: 'Entre La Direccion',
+    title: 'Direccion de la empresa empresa',
     input: 'text',
-    inputLabel: 'Your address',
-    inputPlaceholder: 'Formato Ciudad Comuna calle y numero'
+    inputLabel: 'Formato Calle, Numero, Comuna y Ciudad',
+    inputPlaceholder: 'Av Vitacura Numero 4040 , Vitacura, Santiago',
+    allowEscapeKey: false,
+    allowOutsideClick: false,
+    inputValidator: (value) => {
+      if (!value) {
+        return 'Por favor escribe algo!!'
+      }
+    }
   
   })
   const { value: contacto } = await Swal.fire({
-    title: 'Nombre de la persona encargada',
+    title: 'Nombre de la Persona de Contacto',
     input: 'text',
-    inputLabel: 'Nombre',
-    inputPlaceholder: 'Nombre y apellido'
+    inputLabel: 'Nombre y Apellido',
+    inputPlaceholder: 'Pedro Perez',
+    allowEscapeKey: false,
+    allowOutsideClick: false,
+    inputValidator: (value) => {
+      if (!value) {
+        return 'Por favor escribe algo!!'
+      }
+    }
   
   })
   const { value: correo } = await Swal.fire({
-    title: 'Correo de la Persona encargada',
+    title: 'Correo de la Persona de Contacto',
     input: 'email',
     inputLabel: 'Correo',
-    inputPlaceholder: 'su@correo.com'
+    inputPlaceholder: 'su@correo.com',
+    allowEscapeKey: false,
+    allowOutsideClick: false,
   }) 
   const { value: telefono} = await Swal.fire({
     title: 'Telefono',
     input: 'tel',
-    inputLabel: 'telefono',
-    inputPlaceholder: '+56 9 1234 5678'
+    inputLabel: 'Telefono',
+    inputPlaceholder: '+56 9 1234 5678',
+    allowEscapeKey: false,
+    allowOutsideClick: false,
+    inputValidator: (value) => {
+      if (!value) {
+        return 'Por favor escribe algo!!'
+      }
+    }
     })
 const { value: equipo} = await Swal.fire({
-    title: 'Marca del equipo',
+    title: 'Marca del Equipo',
     input: 'text',
     inputLabel: 'Marca',
-    inputPlaceholder: 'Epson, Xerox, Rocoh...'
+    inputPlaceholder: 'Epson, Xerox, Ricoh, Duplo...',
+    allowEscapeKey: false,
+    allowOutsideClick: false,
+    inputValidator: (value) => {
+      if (!value) {
+        return 'Por favor escribe algo!!'
+      }
+    }
   })
 const { value: modelo} = await Swal.fire({
-    title: 'Modelo del equipo',
+    title: 'Modelo del Equipo',
     input: 'text',
     inputLabel: 'Modelo',
-    inputPlaceholder: 'modelo'
+    inputPlaceholder: 'S40600, S60600,....',
+    allowEscapeKey: false,
+    allowOutsideClick: false,
+    inputValidator: (value) => {
+      if (!value) {
+        return 'Por favor escribe algo!!'
+      }
+    }
   })
   const { value: serial} = await Swal.fire({
     title: 'Serial',
     input: 'text',
     inputLabel: 'Serial',
-    inputPlaceholder: 'S/N .........'
+    inputPlaceholder: 'S/N .........',
+    allowEscapeKey: false,
+    allowOutsideClick: false,
+    inputValidator: (value) => {
+      if (!value) {
+        return 'Por favor escribe algo!!'
+      }
+    }
   })
   const { value: fecha} = await Swal.fire({
     title: 'Fecha del Servicio',
     input: 'text',
-    html: '<input class="swal2-input" id="expiry-date">',
-    inputLabel: 'dia',
-    inputPlaceholder: 'date'
+    inputLabel: 'Formato Dia, Mes, Año',
+    inputPlaceholder: '23/06/2022',
+    allowEscapeKey: false,
+    allowOutsideClick: false,
+    inputValidator: (value) => {
+      if (!value) {
+        return 'Por favor escribe algo!!'
+      }
+    }
   })
   const { value: titulo} = await Swal.fire({
     title: 'Titulo del Servicio',
     input: 'text',
     inputLabel: 'Titulo',
-    inputPlaceholder: 'Titulo'
+    inputPlaceholder: 'Titulo',
+    allowEscapeKey: false,
+    allowOutsideClick: false,
+    inputValidator: (value) => {
+      if (!value) {
+        return 'Por favor escribe algo!!'
+      }
+    }
   })
   
   const { value: tareas } = await Swal.fire({
@@ -147,26 +216,59 @@ const { value: modelo} = await Swal.fire({
     input: 'textarea',
     inputLabel: 'Message',
     inputPlaceholder: 'Escriba sus tareas aqui...',
+    allowEscapeKey: false,
+    allowOutsideClick: false,
     inputAttributes: {
       'aria-label': 'Type your message here'
     },
-    showCancelButton: true
+    inputValidator: (value) => {
+      if (!value) {
+        return 'Por favor escribe algo!!'
+      }
+    }
   })
 
 
   const { value: partes} = await Swal.fire({
     title: 'Partes Usadas',
     input: 'text',
-    inputLabel: 'partes cambiadas',
-    inputPlaceholder: 'partes y cantidad'
+    inputLabel: 'Partes Cambiadas',
+    inputPlaceholder: 'partes y cantidad',
+    allowEscapeKey: false,
+    allowOutsideClick: false,
+    inputValidator: (value) => {
+      if (!value) {
+        return 'Por favor escribe algo!!'
+      }
+    }
   })
   const { value: recomendaciones} = await Swal.fire({
     title: 'Recomendaciones ',
     input: 'textarea',
-    inputLabel: 'Nombre',
-    inputPlaceholder: 'Nombre y apellido'
+    inputLabel: 'Comentarios y Tips',
+    inputPlaceholder: 'Recomandaciones',
+    allowEscapeKey: false,
+    allowOutsideClick: false,
+    inputValidator: (value) => {
+      if (!value) {
+        return 'Por favor escribe algo!!'
+      }
+    }
   })
-  Swal.fire('Presionar el boton Guardar por favor!!!!')
+  const { value: horas} = await Swal.fire({
+    title: 'Horas de Trabajo',
+    input: 'text',
+    inputLabel: 'Horas Usadas',
+    inputPlaceholder: '1',
+    allowEscapeKey: false,
+    allowOutsideClick: false,
+    inputValidator: (value) => {
+      if (!value) {
+        return 'Por favor escribe algo!!'
+      }
+    }
+  })
+  Swal.fire('Si desea guardar estos datos presionar el boton guardar')
   
   
 
@@ -185,10 +287,14 @@ setTitulo(titulo)
 setTareas(tareas)
 setPartes(partes)
 setRecomendaciones(recomendaciones)
+setHoras(horas)
 store();
+}
 
-
- }
+const LogOut = async()=>{
+  
+  navigate('/')
+   }
 
  
     
@@ -199,32 +305,18 @@ store();
     <div className='col'>
     <h1>Nuevo cliente</h1>
     <button onClick={() => {inNombre()}} className="btn btn-primary" >Agregar</button>
+    <button onClick={() => {LogOut()}} className="btn btn-primary" >Cerrar Sesion</button>
     <form onSubmit={store}>
-    {/* <div hidden className='mb-3'>
-        
+    <button  type='submit'  className='btn btn-primary' ><i className="fa-solid fa-floppy-disk"></i> Guardar</button>
+    <div hidden className='mb-3'>
         
         <label hidden className='form-label' > Nombre</label>
-          <input hidden value={nombre} onChange={ (e) => setNombre(e.target.value)} type="text" className='form-control'/>
+          <input hidden value={nombre} onChange={ (e) => setNombre(e.target.value)} type="text" className='form-control' required/>
     </div>
-
-    <div className='mb-3'>
-        <label hidden className='form-label' > Rut</label>
-          <input hidden value={rut} onChange={ (e) => setRut(e.target.value)} type="text" className='form-control'/>
-    </div>
-
-    <div className='mb-3'>
-        <label hidden className='form-label' > Direccion</label>
-          <input hidden value={direccion} onChange={ (e) => setDireccion(e.target.value)} type="text" className='form-control'/>
-    </div> */}
- <button type='submit' className='btn btn-primary' ><i className="fa-solid fa-floppy-disk"></i> Guardar</button>
- 
     </form>
-
-
-
     </div>
-  </div>
-  </div>
+   </div>
+   </div>
   )
 }
 

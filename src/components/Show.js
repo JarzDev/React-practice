@@ -1,10 +1,9 @@
 import React, {useState, useEffect} from 'react';
 import { Link } from 'react-router-dom';
-import{collection, getDoc, doc, getDocs, deleteDoc} from 'firebase/firestore'
-import {db} from '../firebaseConfig/firebase'
+import{collection, doc, getDocs, deleteDoc} from 'firebase/firestore'
+import appFirebase, {db} from '../firebaseConfig/firebase'
 import Swal from 'sweetalert2';
 import withReactContent from 'sweetalert2-react-content';
-import {async} from '@firebase/util'
 import {useNavigate} from 'react-router-dom'
 import Create from './Create';
 
@@ -55,12 +54,13 @@ const confirmDelete = (id) =>{
       Swal.fire(
         'Borrado!',
         
-        'Todo Ok'
+        
       )
     }
   })
-  
-}
+  }
+
+ 
 //pintar
 
 useEffect( ()=> {
@@ -74,15 +74,15 @@ useEffect( ()=> {
     <div className='container'>
     <div className='row'>
     <div className='col'>
-    <div className='d-grid gap-2'>
+    <div className='d-grid gap-4'>
        {/* <Link to="/create" className='btn btn-secondary mt-2 mb-2'>Crear</Link> */}
     </div>
       <table className='table table-dark table hover'>
       <thead>
       <tr>
         <th>Nombre </th>
-        <th>Rut </th>
-        <th>Direccion</th>
+        <th>Fecha </th>
+        <th>Equipo </th>
         <th>Acciones</th>
         </tr>
       </thead>
@@ -91,11 +91,11 @@ useEffect( ()=> {
         {clients.map((client)=> (
         <tr key={clients.id}>
           <td>{client.nombre}</td>
-          <td>{client.rut}</td>
-          <td>{client.direccion}</td>
+          <td>{client.fecha}</td>
+          <td>{client.equipo}</td>
           <td> 
          <Link to={`/ver/${client.id}`} className="btn btn-light"><i className='fa-regular fa-eye'></i></Link>
-         <button onClick={() => {confirmDelete(client.id)}} className="btn btn-danger"><i className='fa-solid fa-trash'></i></button>
+         <button hidden onClick={() => {confirmDelete(client.id)}} className="btn btn-danger"><i className='fa-solid fa-trash'></i></button>
       
 
           </td>
